@@ -28,23 +28,38 @@ class TodoApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
+	
 	@Test
-	void performsTodoCRUDFunctions() {
-		//Returns all Todos
+	void getsAllTodos() {
 		ResponseEntity<String> response = restTemplate.getForEntity("/todos", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
 		int todoCount = documentContext.read("$.length()");
 		assertThat(todoCount).isEqualTo(0);
+	}
 
-		//Does not return Todos with unknown ID
-		response = restTemplate.getForEntity("/todos/1", String.class);
+	@Test
+	void getsTodoWithKnownId() {
+		ResponseEntity<String> response = restTemplate.getForEntity("/todos/0", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+		Number id = documentContext.read("$.id");
+		String name = documentContext.read("$.name");
+		assertThat(id).isEqualTo(0);
+		assertThat(name).isEqualTo("Todo");
+	}
+
+	@Test
+	void doesNotGetTodoWithUnknownId() {
+		ResponseEntity<String> response = restTemplate.getForEntity("/todos/666", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(response.getBody()).isBlank();
+	}
 
-		//Creates new Todo
-		Todo newTodo = new Todo(0L, 0L, "Todo", "Description", false);
+	@Test
+	@DirtiesContext
+	void createsNewTodo() {
+		Todo newTodo = new Todo(1L, 0L, "Todo", "Description", false);
 		ResponseEntity<Void> createResponse = restTemplate.postForEntity("/todos", newTodo, Void.class);
 		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -52,36 +67,44 @@ class TodoApplicationTests {
 		ResponseEntity<String> getResponse = restTemplate.getForEntity(locationOfNewTodo, String.class);
 		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-		documentContext = JsonPath.parse(getResponse.getBody());
+		DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
 		Number id = documentContext.read("$.id");
 		String name = documentContext.read("$.name");
 
 		assertThat(id).isNotNull();
 		assertThat(name).isEqualTo(newTodo.name());
+	}
 
-		//Update existing todo
-		newTodo = new Todo(0L, 0L, "New name", "New description", false);
+	@Test
+	@DirtiesContext
+	void updatesExistingTodo() {
+		Todo newTodo = new Todo(0L, 0L, "New name", "New description", false);
 		HttpEntity<Todo> request = new HttpEntity<>(newTodo);
 		ResponseEntity<Void> updateResponse = restTemplate.exchange("/todos/0", HttpMethod.PUT, request, Void.class);
 		assertThat(updateResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
-		getResponse = restTemplate.getForEntity("/todos/0", String.class);
+		ResponseEntity<String> getResponse = restTemplate.getForEntity("/todos/0", String.class);
 		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-		documentContext = JsonPath.parse(getResponse.getBody());
-		id = documentContext.read("$.id");
-		name = documentContext.read("$.name");
+		DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+		Number id = documentContext.read("$.id");
+		String name = documentContext.read("$.name");
 		assertThat(id).isEqualTo(0);
 		assertThat(name).isEqualTo(newTodo.name());
+	}
 
-		//Delete todo
+	@Test
+	@DirtiesContext
+	void deletesTodoWithKnownId() {
 		ResponseEntity<Void> deleteResponse = restTemplate.exchange("/todos/0", HttpMethod.DELETE, null, Void.class);
 		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
-		getResponse = restTemplate.getForEntity("/todos/0", String.class);
+		ResponseEntity<String> getResponse = restTemplate.getForEntity("/todos/0", String.class);
 		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
 
-		//Does not delete todos with unknown id
-		deleteResponse = restTemplate.exchange("/todos/0", HttpMethod.DELETE, null, Void.class);
+	@Test
+	void doesnotDeleteTodoWithUnknownId() {
+		ResponseEntity<Void> deleteResponse = restTemplate.exchange("/todos/666", HttpMethod.DELETE, null, Void.class);
 		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 	}
 }
