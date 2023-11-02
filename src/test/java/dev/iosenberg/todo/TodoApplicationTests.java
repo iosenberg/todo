@@ -59,7 +59,7 @@ class TodoApplicationTests {
 	@Test
 	@DirtiesContext
 	void createsNewTodo() {
-		Todo newTodo = new Todo(1L, 0L, "Todo", "Description", false);
+		Todo newTodo = new Todo(null, 0L, "Todo", "Description", false);
 		ResponseEntity<Void> createResponse = restTemplate.postForEntity("/todos", newTodo, Void.class);
 		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -103,8 +103,8 @@ class TodoApplicationTests {
 	}
 
 	@Test
-	void doesnotDeleteTodoWithUnknownId() {
+	void doesNotDeleteTodoWithUnknownId() {
 		ResponseEntity<Void> deleteResponse = restTemplate.exchange("/todos/666", HttpMethod.DELETE, null, Void.class);
-		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+		assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 }
