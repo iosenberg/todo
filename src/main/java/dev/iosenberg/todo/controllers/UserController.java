@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import dev.iosenberg.todo.model.User;
+import dev.iosenberg.todo.models.User;
 import dev.iosenberg.todo.repositories.UserRepository;
 
 @RestController

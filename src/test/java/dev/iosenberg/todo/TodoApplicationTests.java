@@ -17,7 +17,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
-import dev.iosenberg.todo.model.Todo;
+import dev.iosenberg.todo.models.Todo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TodoApplicationTests {

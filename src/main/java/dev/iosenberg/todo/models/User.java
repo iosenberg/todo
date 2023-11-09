@@ -1,4 +1,4 @@
-package dev.iosenberg.todo.model;
+package dev.iosenberg.todo.models;
 
 import org.springframework.data.annotation.Id;
 
