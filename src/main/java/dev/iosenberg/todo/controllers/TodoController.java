@@ -36,7 +36,7 @@ public class TodoController {
     @GetMapping
     public ResponseEntity<List<Todo>> findAll(Pageable pageable) {
         Page<Todo> page = todoRepository.findAll(
-            PageRequest.of(1,1)
+            PageRequest.of(0,1)
             );
         return ResponseEntity.ok(page.getContent());
     }

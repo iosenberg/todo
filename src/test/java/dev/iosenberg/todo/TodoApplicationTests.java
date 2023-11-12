@@ -35,7 +35,7 @@ class TodoApplicationTests {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
 		int todoCount = documentContext.read("$.length()");
-		assertThat(todoCount).isEqualTo(0);
+		assertThat(todoCount).isEqualTo(1);
 	}
 
 	@Test
