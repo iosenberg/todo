@@ -4,13 +4,44 @@
         <title>TODO: TEST CRUD</title>
     </head>
     <body>
-        <!-- <div th:switch="${todos}">
-            <div th:case="*">
-                <tr th:each="todo: ${todos}">
+        <div th:switch="${todos}">
+            <h2 th:case="null">ampty</h2>
+            <table th:case="*">
+                <tr>
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        description
+                    </td>
+                    <td>
+                        status
+                    </td>
+                    <td>
+                        actions
+                    </td>
+                </tr>
+                <tr th:each="todo : ${todos}">
                     <td th:text="${todo.name}"></td>
                     <td th:text="${todo.description}"></td>
+                    <td th:text="${todo.completed} ? 'Yes' : 'No'"></td>
+                    <td>
+                        <button>Delete</button>
+                        <button>Complete</button>
+                    </td>
                 </tr>
-            </div>
-        </div> -->
+            </table>
+        </div>
+
+        <br />
+
+        <form method="post" th:action="@{/todos/create}" th:object="${todo}">
+            <label for="name">Name</label>
+            <input id="name" placeholder="Enter Name" required type="text" th:field="*{name}"/>
+            <label for="description">Description</label>
+            <input id="description" placeholder="Enter Description" required type="text" th:field="*{description}"/>
+            <input type="submit" value="Create Todo">
+        </form>
+        <footer>Kindly succ cocc</footer> 
     </body>
 </html>

@@ -42,7 +42,7 @@ public class UserController {
         User savedUser = userRepository.save(newUserRequest);
         URI locationOfNewUser = ucb
             .path("users/{id}")
-            .buildAndExpand(savedUser.id())
+            .buildAndExpand(savedUser.getId())
             .toUri();
         return ResponseEntity.created(locationOfNewUser).build();
     }
