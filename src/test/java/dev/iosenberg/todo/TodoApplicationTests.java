@@ -72,7 +72,7 @@ class TodoApplicationTests {
 		String name = documentContext.read("$.name");
 
 		assertThat(id).isNotNull();
-		assertThat(name).isEqualTo(newTodo.name());
+		assertThat(name).isEqualTo(newTodo.getName());
 	}
 
 	@Test
@@ -89,7 +89,7 @@ class TodoApplicationTests {
 		Number id = documentContext.read("$.id");
 		String name = documentContext.read("$.name");
 		assertThat(id).isEqualTo(0);
-		assertThat(name).isEqualTo(newTodo.name());
+		assertThat(name).isEqualTo(newTodo.getName());
 	}
 
 	@Test
