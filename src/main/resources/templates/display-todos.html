@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
     <head>
-        <title>TODO: TEST CRUD</title>
+        <title>Todo List!</title>
     </head>
     <body>
         <div th:switch="${todos}">
@@ -26,22 +26,26 @@
                     <td th:text="${todo.description}"></td>
                     <td th:text="${todo.completed} ? 'Yes' : 'No'"></td>
                     <td>
-                        <button>Delete</button>
-                        <button>Complete</button>
+                        <a th:href="@{todo/delete/{id}(id=${todo.id})}">Delete</a>
+                    </td>
+                    <td>
+                        <a th:href="@{todo/complete/{id}(id=${todo.id})}">Complete</a>
                     </td>
                 </tr>
             </table>
         </div>
 
         <br />
-
-        <form method="post" th:action="@{/todos/create}" th:object="${todo}">
+        <h3>Add something you've gotta do!</h3>
+        <form method="post" th:action="@{/todo/create}" th:object="${todo}">
             <label for="name">Name</label>
             <input id="name" placeholder="Enter Name" required type="text" th:field="*{name}"/>
             <label for="description">Description</label>
             <input id="description" placeholder="Enter Description" required type="text" th:field="*{description}"/>
             <input type="submit" value="Create Todo">
         </form>
-        <footer>Kindly succ cocc</footer> 
+
+        <br />
+        <footer>Thanks for playing!</footer> 
     </body>
 </html>
