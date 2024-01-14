@@ -1,45 +1,45 @@
-// package dev.iosenberg.todo;
+package dev.iosenberg.todo;
 
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Configuration;
-// import org.springframework.http.HttpMethod;
-// import org.springframework.security.config.Customizer;
-// import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-// import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-// import org.springframework.security.core.userdetails.User;
-// import org.springframework.security.core.userdetails.UserDetails;
-// import org.springframework.security.core.userdetails.UserDetailsService;
-// import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-// import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
-// @Configuration
-// @EnableWebSecurity
-// public class WebSecurityConfig {
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig {
     
-//     @Bean
-//     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-// 		http
-// 			.authorizeHttpRequests(request -> request
-// 				.requestMatchers(HttpMethod.POST, "/todos").permitAll()	
-// 				.anyRequest().permitAll()
-// 			)
-// 			.formLogin(formLogin -> formLogin
-// 				.loginPage("/login").permitAll()
-// 			)
-// 			.rememberMe(Customizer.withDefaults());
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http
+			.authorizeHttpRequests(request -> request
+				.requestMatchers(HttpMethod.POST, "/todo").permitAll()	
+				.anyRequest().permitAll()
+			)
+			.formLogin(formLogin -> formLogin
+				.loginPage("/login").permitAll()
+			)
+			.rememberMe(Customizer.withDefaults());
 
-// 		return http.build();
-// 	}
+		return http.build();
+	}
 
-// 	@Bean
-// 	public UserDetailsService userDetailsService() {
-// 		UserDetails user =
-// 			 User.withDefaultPasswordEncoder()
-// 				.username("user")
-// 				.password("password")
-// 				.roles("USER")
-// 				.build();
+	@Bean
+	public UserDetailsService userDetailsService() {
+		UserDetails user =
+			 User.withDefaultPasswordEncoder()
+				.username("user")
+				.password("password")
+				.roles("USER")
+				.build();
 
-// 		return new InMemoryUserDetailsManager(user);
-// 	}
-// }
+		return new InMemoryUserDetailsManager(user);
+	}
+}
